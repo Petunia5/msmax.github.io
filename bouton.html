@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Obtenir un prix</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:700">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"], button[type="submit"] {
+      border-radius: 30px;
+      padding: 10px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    button[type="submit"] {
+      background-color: #2e5ad0;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV1enx5m3beWKUfx78riaWf0Fp3DDmuD4&libraries=places"></script>
+  <script>
+    function initialize() {
+      var input = document.getElementById('address');
+      var autocomplete = new google.maps.places.Autocomplete(input);
+    }
+  </script>
+</head>
+<body onload="initialize()">
+  <form action="calculateur.php" method="post">
+    <label for="address">Adresse :</label>
+    <input type="text" id="address" name="address" placeholder="Entrez votre adresse" required>
+    <button type="submit">Obtenir mon prix maintenant</button>
+  </form>
+</body>
+</html>
