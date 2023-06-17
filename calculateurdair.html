@@ -59,7 +59,7 @@
 
       google.maps.event.addListener(map, 'zoom_changed', function() {
         if (map.getZoom() >= 16) {
-          map.setMapTypeId(google.maps.MapTypeId.ROADMAP); // Mode 2D lorsque le zoom est supérieur ou égal à 16
+          map.setMapTypeId(google.maps.MapTypeId.SATELLITE); // Mode satellite lorsque le zoom est supérieur ou égal à 16
         } else {
           map.setMapTypeId(google.maps.MapTypeId.SATELLITE); // Mode satellite pour les autres zooms
         }
