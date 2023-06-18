@@ -6,24 +6,58 @@
     #map {
       height: 400px;
       width: 100%;
+      border-radius: 20px;
     }
+
     body {
       font-family: 'Roboto', sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 30px;
+      border: none;
+      text-align: center;
       font-weight: bold;
+      margin-top: 20px;
+    }
+
+    button {
+      border-radius: 30px;
+      padding: 15px 30px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+      background-color: #2e5ad0;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #2548a8;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>Calculateur d'aire de gazon</h1>
   <div>
-    <label for="address">Adresse :</label>
     <input type="text" id="address" placeholder="Entrez votre adresse">
     <button onclick="zoomToAddress()">Zoom sur l'adresse</button>
   </div>
   <div id="map"></div>
   <button onclick="startDrawing()" id="drawButton">Commencer le dessin</button>
   <div id="result"></div>
-  <button onclick="confirmArea()">Confirmer l'aire</button>
+  <button onclick="confirmArea()" id="confirmButton" style="display: none;">Confirmer l'aire</button>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV1enx5m3beWKUfx78riaWf0Fp3DDmuD4&libraries=drawing&callback=initMap" async defer></script>
   <script>
@@ -32,11 +66,12 @@
     var drawingManager;
     var polygons = [];
     var drawButton = document.getElementById('drawButton');
+    var confirmButton = document.getElementById('confirmButton');
 
     // Fonction d'initialisation de la carte
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 0, lng: 0},
+        center: {lat: 45.5017, lng: -73.5673}, // Coordonnées de Montréal
         zoom: 10,
         mapTypeId: google.maps.MapTypeId.SATELLITE // Mode satellite par défaut
       });
@@ -54,6 +89,7 @@
           polygons.push(polygon);
           calculateArea(); // Calculer l'aire à chaque nouveau polygone
           drawButton.innerHTML = 'Recommencer le dessin'; // Mettre à jour le texte du bouton
+          confirmButton.style.display = 'inline-block'; // Afficher le bouton de confirmation
         }
       });
 
@@ -74,6 +110,7 @@
         drawingControl: false
       });
       drawButton.innerHTML = 'Recommencer le dessin'; // Mettre à jour le texte du bouton
+      confirmButton.style.display = 'none'; // Cacher le bouton de confirmation
     }
 
     // Fonction de calcul de l'aire
@@ -100,7 +137,7 @@
         if (status === google.maps.GeocoderStatus.OK) {
           var location = results[0].geometry.location;
           map.setCenter(location);
-          map.setZoom(15);
+          map.setZoom(20); // Zoom plus précis
         } else {
           alert('L\'adresse spécifiée n\'a pas pu être trouvée. Veuillez réessayer.');
         }
@@ -129,9 +166,13 @@
 
       var formattedArea = (totalArea * 10.764).toFixed(2); // Conversion en pieds carrés
 
-      // Envoyer les données à un comparateur de prix (ajuster l'URL selon vos besoins)
-      var comparateurUrl = 'https://exemple.com/comparateur?aire=' + formattedArea;
-      window.location.href = comparateurUrl;
+      if (totalArea > 0) {
+        // Envoyer les données à un comparateur de prix (ajuster l'URL selon vos besoins)
+        var comparateurUrl = 'https://petunia5.github.io/msmax.github.io/?address=' + encodeURIComponent(document.getElementById('address').value);
+        window.location.href = comparateurUrl;
+      } else {
+        alert('Veuillez dessiner au moins un polygone pour calculer l\'aire.');
+      }
     }
   </script>
 </body>
