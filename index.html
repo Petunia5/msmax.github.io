@@ -90,6 +90,20 @@
       drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: null,
         drawingControl: false,
+        polylineOptions: {
+          strokeColor: '#73f74d', // Couleur des lignes de dessin
+          strokeWeight: 2
+        },
+        markerOptions: {
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 5,
+            fillColor: '#429a37', // Couleur des points de dessin
+            fillOpacity: 1,
+            strokeColor: '#429a37',
+            strokeWeight: 1
+          }
+        },
         map: map
       });
 
@@ -177,9 +191,14 @@
 
       var formattedArea = (totalArea * 10.764).toFixed(2); // Conversion en pieds carrés
 
-      // Envoyer les données à un comparateur de prix (ajuster l'URL selon vos besoins)
-      var comparateurUrl = 'https://exemple.com/comparateur?aire=' + formattedArea;
-      window.location.href = comparateurUrl;
+      // Vérifier si l'aire a été calculée
+      if (totalArea > 0) {
+        // Envoyer les données à un comparateur de prix (ajuster l'URL selon vos besoins)
+        var comparateurUrl = 'https://exemple.com/comparateur?aire=' + formattedArea;
+        window.location.href = comparateurUrl;
+      } else {
+        alert("Veuillez dessiner une zone avant de confirmer l'aire.");
+      }
     }
   </script>
 </body>
